@@ -1,4 +1,15 @@
 import React from "react"
-import Header from "./components/Header"
+import Form from "./components/Form"
+import List from "./components/List"
+import NavBar from "./components/NavBar"
 
-export default App;
+export default function App(){
+
+    return(
+        <>
+        <NavBar/>
+        <Form/>
+        <List/>
+        </>
+    )
+}

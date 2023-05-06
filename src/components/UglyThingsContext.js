@@ -1,53 +1,69 @@
 
-import React from "react"
+import React, { useEffect } from "react"
+import { createContext } from "react"
+import axios from "axios"
 
-const Context = React.createContext()
+const UglyContext = React.createContext()
 
-function UglyThingsContext(props){
-
-     const [UglyThingsContext, setUglyThingsContext] = React.useState({
+function UglyContextProvider(props){
+    //setting state to hold arrat and list data items 
+    const [uglyList, setUglyList] = React.useState([])
+    
+    const [listData, setListData] = React.useState({
         title: "",
-        desc: "",
-        imgUrl: ""
-     })
+        imgUrl: "",
+        description: ""
+    })
 
-     const [uglyThingsArray, setuglyThingsArray] = React.useState([])
-
-     function handleChange(event){
-        const {name, value} = event.target
-        setUglyThingsContext(prevState => {
+    //get request
+    const getUglyThing = () =>{
+        axios.get("https://api.vschool.io/karynachernyak/thing")
+        .then(res => {
+            setUglyList(res.data)
+        })
+        .catch(err=> console.log(err))
+    }
+    useEffect(() => {
+        console.log("useEffect ran successfully")
+        getUglyThing()
+    }, [])
+    
+    //handle change function 
+    function handleChange(e){
+        const {name, value} = e.target
+        setListData(prevListData => {
             return {
-                [name] : value
+                ...prevListData,
+                [name]: value
             }
         })
-     }
+    }
 
-     function addItem(){
-        setUglyThingsContext(prevState => {
-            return(
-                [...prevState, UglyThingsContext]
-            )
+
+    function handleSubmit(e){
+        e.preventDefault();
+        axios.post("https://api.vschool.io/karynachernyak/thing", {
+            title: listData.title,
+            imgUrl: listData.imgUrl,
+            description: listData.description
+            
         })
-     }
+            .then(res => console.log(res.data))
+            .catch(err => console.log(err))
+    }
 
-     function handleSubmit(){
-        e.preventDefault()
-        addItem()
-        axios.post("https://api.vschool.io/karynachernyak/thing", UglyThingsContext)
-        .then(res => console.log(res.data))
-        .catch(err => console.log(err))
-
-     }
+    
     return(
-        <Context.Provider value={{
-            uglyThingsArray,
-            handleChange,
-            handleSubmit
-
-        }}>
-            {props.childen}
-        </Context.Provider>
+        <UglyContext.Provider value={{
+            uglyList, 
+            setUglyList,
+            listData,
+            setListData,
+            handleSubmit,
+            handleChange
+            }}>
+            {props.children}
+        </UglyContext.Provider>
     )
 }
-
-export {UglyThingsContext, Context}
+export {UglyContext, UglyContextProvider}
