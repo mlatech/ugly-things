@@ -3,15 +3,14 @@ import { UglyContext } from "./UglyThingsContext";
 import UglyThing from "./UglyThing";
 
 export default function List(){
-    const { uglyList} = useContext(UglyContext)
-    console.log(uglyList)
+    const {uglyList} = useContext(UglyContext)
+    
     return(
-
         <div>
             <h1>this is list</h1>
             {uglyList.map((ugly, _id) => {
                 return(
-                <UglyThing {...ugly}
+                <UglyThing {...uglyList}
                 key = {ugly._id}
                 id = {ugly._id}
                 title = {ugly.title}
