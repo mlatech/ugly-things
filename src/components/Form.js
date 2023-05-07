@@ -29,6 +29,7 @@ export default function Form(props){
             name="imgUrl"
             value={listData.imgUrl}
             onChange={handleChange}
+            style={{width: "200px", height: "200px"}}
             />
 
             <input

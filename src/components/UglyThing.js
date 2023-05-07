@@ -1,5 +1,5 @@
 import React,{useContext, useState} from "react";
-import List from "./List"
+// import List from "./List"
 import { UglyContext } from "./UglyThingsContext";
 import axios from "axios"
 
@@ -34,17 +34,17 @@ export default function UglyThing(props){
         description: editUgly.description
     }
     axios.put(`https://api.vschool.io/karynachernyak/thing/${props.id}`, updatedUgly)
-    .then(() => getUglyThing())
-    .catch(err => console.log(err))
-    console.log(updatedUgly)
-    setEditMode(false)
-
+        .then(() => getUglyThing())
+        .catch(err => console.log(err))
+        console.log(updatedUgly)
+        setEditMode(false)
+    }
 
     return(
         <div>
             {editMode ? 
             <form onSubmit={handleSubmitEdit}>
-                <img src={props.imgUrl}/>
+                <img src={props.imgUrl} style={{width: "200px", height: "200px"}}/>
                 <input
                 type="text"
                 name="title"
@@ -74,4 +74,4 @@ export default function UglyThing(props){
             </div>
         </div>
     )
-}}
+}
